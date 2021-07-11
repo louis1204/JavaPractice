@@ -1,31 +1,30 @@
 class MedianFinder {
 
-    List<Integer> list = new ArrayList<>();
-    boolean isSorted = false;
     /** initialize your data structure here. */
+    PriorityQueue<Integer> lo = new PriorityQueue<>((a, b) -> b - a);
+    PriorityQueue<Integer> hi = new PriorityQueue<>();
+    
     public MedianFinder() {
         
     }
     
     public void addNum(int num) {
-        list.add(num);
-        isSorted = false;
+        lo.add(num);
+        
+        hi.add(lo.poll());
+        
+        if (hi.size() > lo.size()) {
+            lo.add(hi.poll());
+        }
     }
     
     public double findMedian() {
-        if (!isSorted) {
-            list.sort((a, b) -> a - b);
+        if (lo.size() == hi.size()) {
+            // System.out.println(lo.peek());
+            // System.out.println(hi.peek());
+            return (lo.peek() + hi.peek()) / 2.0;
         }
-        isSorted = true;
-        if (list.size() == 0) {
-            return 0;
-        } 
-        if (list.size() % 2 != 0) {
-            return list.get(list.size() / 2);
-        } else {
-            int mid = list.size() / 2;
-            return (list.get(mid) + list.get(mid - 1)) / 2.0;
-        }
+        return lo.peek();
     }
 }
 
@@ -34,4 +33,4 @@ class MedianFinder {
  * MedianFinder obj = new MedianFinder();
  * obj.addNum(num);
  * double param_2 = obj.findMedian();
- */
+ *//
