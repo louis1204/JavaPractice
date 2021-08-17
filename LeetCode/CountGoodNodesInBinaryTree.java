@@ -14,26 +14,22 @@
  * }
  */
 class Solution {
-    PriorityQueue<Integer> heap =  new PriorityQueue<>((a, b) -> b - a);
     int res = 0;
     
     public int goodNodes(TreeNode root) {
-        helper(root);
+        helper(root, Integer.MIN_VALUE);
         return res;
     }
     
-    private void helper(TreeNode root) {
+    private void helper(TreeNode root, int max) {
         if (root == null) {
             return;
         }
-        if (heap.isEmpty() || heap.peek() <= root.val) {
+        if (root.val >= max) {
             res++;
         }
-        heap.offer(root.val);
         
-        helper(root.left);
-        helper(root.right);
-        
-        heap.remove(root.val);
+        helper(root.left, Math.max(max, root.val));
+        helper(root.right, Math.max(max, root.val));
     }
 }
