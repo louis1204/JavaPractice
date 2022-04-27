@@ -1,6 +1,6 @@
 class Solution {
     public int minCostConnectPoints(int[][] points) {
-        // Construct a MST. Construct all edges then use Prims to construct the graph
+        // Construct a MST. Construct all edges then use Kruskal's components to construct the graph
         int min = 0;
         int[] cost = new int[points.length];
         Arrays.fill(cost, Integer.MAX_VALUE);
