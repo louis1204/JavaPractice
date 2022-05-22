@@ -1,27 +1,32 @@
 class Solution {
+    boolean[][] dp = null;
+    
     public int countSubstrings(String s) {
-        // Just go through all substrings?
+        // Initialize the memo with the base case of each single letter being a pal
+        // Then start increasing the size until we reach s.length, and check if substring
+        // by comparing the end chars and the inner string if it's a substring
+        dp = new boolean[s.length()][s.length()];
         int res = 0;
+        // Initialize
         for (int i = 0; i < s.length(); i++) {
-            for (int j = i + 1; j <= s.length(); j++) {
-                if (isPal(s.substring(i, j))) {
+            dp[i][i] = true;
+            res++;
+        }
+        // Go through the sizes
+        for (int size = 1; size < s.length(); size++) {
+            for (int i = 0; i < s.length(); i++) {
+                if (i + size >= s.length()) {
+                    break;
+                }
+                int end = i + size;
+                // System.out.println(i + " " + end);
+                boolean isPal = s.charAt(i) == s.charAt(end) && (i == end - 1 || dp[i + 1][end - 1]);
+                dp[i][end] = isPal;
+                if (isPal) {
                     res++;
                 }
             }
         }
         return res;
-    }
-    
-    private boolean isPal(String s) {
-        int p1 = 0;
-        int p2 = s.length() - 1;
-        while (p1 < p2) {
-            if (s.charAt(p1) != s.charAt(p2)) {
-                return false;
-            }
-            p1++;
-            p2--;
-        }
-        return true;
     }
 }
