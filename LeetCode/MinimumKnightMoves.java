@@ -1,13 +1,13 @@
 class Solution {
     public int minKnightMoves(int x, int y) {
         // BFS, with seen squares?
-        Set<Pair<Integer, Integer>> seen = new HashSet<>();
+        boolean[][] seen = new boolean[605][605]; // 302 should be our max in both sides, so multiply that by 2 and we get 604. We use 605 due to the indexing to be max of 604
         int[][] dirs = new int[][]{{-1, -2}, {-2, -1}, {-2, 1}, {-1, 2},
                                    {1, -2}, {2, -1}, {2, 1}, {1, 2}};
         Deque<Pair<Integer, Integer>> queue = new LinkedList<>();
         Pair<Integer, Integer> origin = new Pair<>(0, 0);
         queue.offer(origin);
-        seen.add(origin);
+        seen[302][302] = true;
         
         Pair<Integer, Integer> target = new Pair<>(x, y);
         
@@ -22,10 +22,10 @@ class Solution {
                 }
                 for (int[] dir : dirs) {
                     Pair<Integer, Integer> n = new Pair<>(curr.getKey() + dir[0], curr.getValue() + dir[1]);
-                    if (!seen.contains(n) && Math.abs(n.getKey()) <= Math.abs(x) + 2 && Math.abs(n.getValue()) <= Math.abs(y) + 2) {
+                    if (!seen[n.getKey() + 302][n.getValue() + 302] && Math.abs(n.getKey()) <= Math.abs(x) + 2 && Math.abs(n.getValue()) <= Math.abs(y) + 2) {
                         next.offer(n);
                     }
-                    seen.add(n);
+                    seen[n.getKey() + 302][n.getValue() + 302] = true;
                 }
             }
             queue = next;
