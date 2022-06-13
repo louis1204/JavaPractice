@@ -1,5 +1,5 @@
 class NumArray {
-
+    // https://www.youtube.com/watch?v=uSFzHCZ4E-8
     int[] bit;
     int[] nums;
     
