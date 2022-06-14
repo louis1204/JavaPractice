@@ -1,44 +1,56 @@
 class NumArray {
-    int[] BIT = null;
-    int[] nums = null;
+    // https://www.youtube.com/watch?v=uSFzHCZ4E-8
+    int[] bit;
+    int[] nums;
+    
     public NumArray(int[] nums) {
-        BIT = new int[nums.length + 1];
-        this.nums = nums;
+        this.bit = new int[nums.length + 1]; // We add plus one since BIT is 1 indexed
+        this.nums = nums; // We save the original to update based on diffs
+        createBit(this.bit, nums);
+        System.out.println(Arrays.toString(this.bit));
+    }
+    
+    private void createBit(int[] bit, int[] nums) {
+        // First populate
         for (int i = 0; i < nums.length; i++) {
-            init(i, nums[i]);
+            bit[i + 1] = nums[i];
+        }
+        // Update it's parents
+        for (int i = 1; i < bit.length; i++) {
+            int parent = i + (i & -i);
+            if (parent < bit.length) {
+                bit[parent] += bit[i];
+            }
         }
     }
     
-    public void init(int index, int val) {
-        index++;
-        while (index < BIT.length) {
-            BIT[index] += val;
-            index += index & -index;
-        }
-    }
     public void update(int index, int val) {
-        int diff = val - nums[index];
-        nums[index] = val;
-        init(index, diff);
+        index += 1;
+        int diff = val - this.nums[index - 1];
+        this.nums[index - 1] = val;
+        // int childInd = (index & -index) >> 1;
+        // this.bit[index] += this.bit[childInd];
+        // Update the index and all its parents
+        while (index < this.bit.length) {
+            this.bit[index] += diff;
+            index += (index & -index);
+        }
+        // System.out.println(Arrays.toString(this.bit));
     }
     
     public int sumRange(int left, int right) {
-        int leftVal = getSum(left - 1);
-        int rightVal = getSum(right);
-        // System.out.println(Arrays.toString(BIT));
-        // System.out.println(leftVal);
-        // System.out.println(rightVal);
-        return rightVal - leftVal;
+        // We'd have to get the sum range from it's right and sub from its left
+        return helper(right + 1) - helper(left);
     }
     
-    private int getSum(int index) {
-        int res = 0;
-        index++;
-        while (index > 0) {
-            res += BIT[index];
-            index -= index & -index;
+    private int helper(int endInd) {
+        int sum = 0;
+        while (endInd > 0) {
+            sum += this.bit[endInd];
+            endInd -= endInd & -endInd; // Remove its last bit
         }
-        return res;
+        // System.out.println(sum);
+        return sum;
     }
 }
 
