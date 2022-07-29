@@ -26,3 +26,38 @@ class Solution {
         return res;
     }
 }
+
+// Even faster
+class Solution {
+    public List<String> findAndReplacePattern(String[] words, String pattern) {
+        // Looks like we can serialize the pattern
+        if (pattern.length() == 1) {
+            return Arrays.asList(words);
+        }
+        int patSerial = getSerial(pattern);
+        List<String> res = new ArrayList<>();
+        // System.out.println(patSerial);
+        for (String w : words) {
+            // System.out.println(getSerial(w));
+            if (getSerial(w) == patSerial) {
+                res.add(w);
+            }
+        }
+        return res;
+    }
+    
+    private int getSerial(String s) {
+        int[] alpha = new int[26];
+        int count = 1;
+        int serial = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (alpha[ch - 'a'] == 0) {
+                alpha[ch - 'a'] = count++;
+            }
+            serial *= 10;
+            serial += alpha[ch - 'a'];
+        }
+        return serial;
+    }
+}
