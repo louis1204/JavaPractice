@@ -1,17 +1,12 @@
 class Solution {
     public String removeDuplicates(String s) {
-        // Monotonic stack
-        Stack<Character> stack = new Stack<>();
-        for (char c : s.toCharArray()) {
-            if (!stack.isEmpty() && stack.peek() == c) {
-                stack.pop();
-            } else {
-                stack.push(c);
-            }
-        }
         StringBuilder sb = new StringBuilder();
-        while (!stack.isEmpty()) {
-            sb.insert(0, stack.pop());
+        for (char c : s.toCharArray()) {
+            if (!sb.isEmpty() && sb.charAt(sb.length() - 1) == c) {
+                sb.deleteCharAt(sb.length() - 1);
+            } else {
+                sb.append(c);
+            }
         }
         return sb.toString();
     }
