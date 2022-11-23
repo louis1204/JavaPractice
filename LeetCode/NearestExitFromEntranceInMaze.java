@@ -1,11 +1,13 @@
 class Solution {
     // Can use a mix of BFS, heap, and a seen matrix
+    // We don't need a heap. Regular bfs is fine
     int[][] dirs = new int[][]{{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
     int closest = Integer.MAX_VALUE;
 
     public int nearestExit(char[][] maze, int[] entrance) {
         boolean[][] seen = new boolean[maze.length][maze[0].length];
-        PriorityQueue<int[]> bfs = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        // PriorityQueue<int[]> bfs = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        Deque<int[]> bfs = new LinkedList<>();
         bfs.offer(new int[] {0, entrance[0], entrance[1]}); // steps, i, j
         seen[entrance[0]][entrance[1]] = true;
 
