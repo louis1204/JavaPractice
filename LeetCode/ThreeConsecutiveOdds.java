@@ -7,9 +7,9 @@ class Solution {
             bits <<= 1;
             if (num % 2 != 0) {
                 bits |= 1;
-            }
-            if ((bits & 7) == 7) {
-                return true;
+                if ((bits & bitMask) == bitMask) {
+                    return true;
+                }
             }
         }
         return false;
